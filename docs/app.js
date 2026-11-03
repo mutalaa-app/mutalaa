@@ -335,7 +335,7 @@ ${JSON.stringify(tl, null, 1)}
 1. افهم ما يريده المستخدم (إجازة، مطالعة، طلب لوجستي، أو أي كتاب رسمي).
 2. إذا نقصت معلومة أساسية لا يمكن كتابة الكتاب بدونها (مثل اسم الموظف ومدة الإجازة، أو المواد المطلوبة)، اسأل عنها كلها في رسالة واحدة قصيرة (action = "ask").
 3. رقم الكتاب والتاريخ: إذا لم يذكرهما المستخدم في المحادثة، اسأله عنهما مرة واحدة مع اقتراح الرقم التالي وتاريخ اليوم. إذا قال "اليوم" استخدم تاريخ اليوم، وإذا قال "بدون رقم" اترك الرقم فارغاً.
-4. الجهة المخاطبة: إذا لم يحددها المستخدم اترك "to" فارغاً (يبقى كما في النموذج).
+4. الجهة المخاطبة: إذا لم يحددها المستخدم اترك "to" فارغاً (يبقى كما في النموذج). إذا كانت على سطرين (مثل "بواسطة ...") افصل بينهما بـ \n.
 5. اكتب المتن بالعربية الفصحى الرسمية بأسلوب الكتب الحكومية العراقية، مختصراً وواضحاً، على شكل فقرات في مصفوفة body.
 6. لا تكتب سطر التحية إذا كان النموذج فيه has_greeting_line = true، ولا تكتب سطر الختام (مثل "مع التقدير") إذا كان has_closing_line = true. ويمكن أن تنتهي الفقرة الأخيرة بعبارة مثل "للتفضل بالاطلاع والموافقة".
 7. لا تخترع أسماء أو أرقاماً أو تواريخ أو مبالغ لم يذكرها المستخدم.
@@ -438,19 +438,20 @@ ${JSON.stringify(tl, null, 1)}
     const f = {
       number: el('input', { value: letter.number || '', dir: 'auto', placeholder: '—' }),
       date: el('input', { value: dObj ? arDate(dObj) : (letter.date || ''), dir: 'auto' }),
-      to: el('input', { value: letter.to || '', placeholder: meta.to || 'الجهة المخاطبة' }),
+      to: el('textarea', { rows: 2, placeholder: meta.to || 'الجهة المخاطبة (ولسطر ثاني مثل: بواسطة… اضغط سطر جديد)', style: 'min-height:56px' }),
       subject: el('input', { value: letter.subject || '' }),
       body: el('textarea', { rows: Math.min(14, Math.max(5, (letter.body || []).join('\n').length / 38 | 0)) }),
       copies: el('textarea', { rows: 2, placeholder: 'نسخة منه إلى (كل جهة بسطر) — اختياري', style: 'min-height:56px' }),
     };
     f.body.value = (letter.body || []).join('\n');
+    f.to.value = String(letter.to || '').replace(/\s*(بواسطة)/, '\n$1').trim();
     f.copies.value = (letter.copies || []).join('\n');
     sel.addEventListener('change', () => { const m = tplById(sel.value).meta || {}; f.to.placeholder = m.to || 'الجهة المخاطبة'; });
     const read = () => ({
       template_id: sel.value,
       number: f.number.value.trim(),
       date: f.date.value.trim(),
-      to: f.to.value.trim(),
+      to: f.to.value.split('\n').map((x) => x.trim()).filter(Boolean).join('\n'),
       subject: f.subject.value.trim(),
       body: f.body.value.split('\n').map((x) => x.trim()).filter(Boolean),
       copies: f.copies.value.split('\n').map((x) => x.trim()).filter(Boolean),

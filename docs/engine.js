@@ -56,8 +56,21 @@
     return all(node, 'drawing').length > 0 || node.getElementsByTagName('v:imagedata').length > 0 || node.getElementsByTagName('w:pict').length > 0;
   }
   function setText(tNode, text) {
-    tNode.textContent = text;
+    const lines = String(text).split('\n');
+    tNode.textContent = lines[0];
     tNode.setAttributeNS(XML_NS, 'xml:space', 'preserve');
+    // الأسطر الإضافية (مثل: بواسطة ...) تُكتب بفاصل سطر حقيقي داخل نفس المقطع
+    let after = tNode;
+    for (let i = 1; i < lines.length; i++) {
+      const doc = tNode.ownerDocument;
+      const br = doc.createElementNS(W, 'w:br');
+      const t = doc.createElementNS(W, 'w:t');
+      t.textContent = lines[i];
+      t.setAttributeNS(XML_NS, 'xml:space', 'preserve');
+      after.parentNode.insertBefore(br, after.nextSibling);
+      br.parentNode.insertBefore(t, br.nextSibling);
+      after = t;
+    }
   }
   // يستبدل النص بين موضعين داخل فقرة مع الحفاظ على تنسيق المقاطع
   function replaceRange(p, start, end, newText) {
