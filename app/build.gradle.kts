@@ -9,8 +9,17 @@ android {
         applicationId = "com.ahmed.mutalaa"
         minSdk = 29
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0"
+    }
+    // مفتاح توقيع ثابت حتى تتحدث النسخ فوق بعضها بدون حذف التطبيق
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("release.keystore")
+            storePassword = "mutalaa123"
+            keyAlias = "mutalaa"
+            keyPassword = "mutalaa123"
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
