@@ -118,3 +118,4 @@ main{flex:1;min-height:0;position:relative}
   body{font-size:16px}
   .msg{max-width:75%}
 }
+.card a.btn{text-decoration:none;margin-top:8px;box-sizing:border-box}

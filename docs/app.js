@@ -660,6 +660,17 @@ ${JSON.stringify(tl, null, 1)}
     await loadTemplates();
     saveS();
     welcome();
+    // طلب جاهز قادم من تطبيق دليل الموظف (?q=...)
+    try {
+      const q = new URLSearchParams(location.search).get('q');
+      if (q && q.trim()) {
+        input.value = q.trim().slice(0, 1000);
+        input.dispatchEvent(new Event('input'));
+        input.focus();
+        toast('تمت تعبئة الطلب من دليل الموظف، راجعه واضغط إرسال');
+        history.replaceState(null, '', location.pathname);
+      }
+    } catch (e) {}
     if ('serviceWorker' in navigator && location.protocol === 'https:' && !isAndroid) {
       navigator.serviceWorker.register('sw.js').catch(() => {});
     }
