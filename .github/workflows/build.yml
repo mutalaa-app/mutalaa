@@ -29,7 +29,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
-          name: مطالعة — آخر نسخة
-          body: "حمّل ملف mutalaa.apk وثبّته على هاتف أندرويد."
+          name: دليل الموظف — آخر نسخة
+          body: "حمّل ملف mutalaa.apk وثبّته على هاتف أندرويد. دليل الموظف + إنشاء المطالعات والكتب الرسمية."
           files: mutalaa.apk
           make_latest: true

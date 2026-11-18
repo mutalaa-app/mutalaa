@@ -112,7 +112,8 @@
   document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => show(b.dataset.view)));
   window.handleBack = () => {
     if (!$('#view-chat').classList.contains('active')) { show('chat'); return true; }
-    return false;
+    location.href = '../index.html';
+    return true;
   };
 
   /* ---------- المحادثة ---------- */
@@ -667,12 +668,12 @@ ${JSON.stringify(tl, null, 1)}
         input.value = q.trim().slice(0, 1000);
         input.dispatchEvent(new Event('input'));
         input.focus();
-        toast('تمت تعبئة الطلب من دليل الموظف، راجعه واضغط إرسال');
+        toast('تمت تعبئة الطلب، راجعه واضغط إرسال');
         history.replaceState(null, '', location.pathname);
       }
     } catch (e) {}
     if ('serviceWorker' in navigator && location.protocol === 'https:' && !isAndroid) {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
+      navigator.serviceWorker.register('../sw.js').catch(() => {});
     }
   })();
 })();

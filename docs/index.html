@@ -4,124 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1E3A5F">
-<title>مطالعة</title>
+<title>دليل الموظف</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="guide.css">
 </head>
 <body>
-<header class="top">
-  <div class="brand">
-    <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="6" y="3" width="20" height="26" rx="3" fill="#F7F4EC"/><path d="M10 10h12M10 14h12M10 18h8" stroke="#1E3A5F" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="23" r="4" fill="#B5432F"/></svg>
-    <div>
-      <h1>مطالعة</h1>
-      <p class="sub" id="sub">كتبك الرسمية بأمر بسيط</p>
-    </div>
-  </div>
-  <button class="icon-btn" id="newChat" title="محادثة جديدة" aria-label="محادثة جديدة">
-    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-  </button>
-</header>
-
-<main>
-  <!-- المحادثة -->
-  <section class="view active" id="view-chat">
-    <div class="chat" id="chat"></div>
-    <form class="composer" id="composer">
-      <textarea id="input" rows="1" placeholder="اكتب طلبك… مثلاً: إجازة 3 أيام للموظف علي حسين"></textarea>
-      <button type="submit" class="send" aria-label="إرسال">
-        <svg viewBox="0 0 24 24"><path d="M20 12L4 4l3 8-3 8 16-8z" fill="currentColor" transform="scale(-1,1) translate(-24,0)"/></svg>
-      </button>
-    </form>
-  </section>
-
-  <!-- النماذج -->
-  <section class="view" id="view-templates">
-    <div class="page">
-      <div class="page-head">
-        <h2>النماذج</h2>
-        <p>ارفع كتباً سابقة بصيغة Word، وسيأخذ التطبيق منها الشعار والترويسة والخط وأسلوب الكتابة.</p>
-      </div>
-      <label class="upload">
-        <input type="file" id="fileInput" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple hidden>
-        <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0l-5 5m5-5l5 5M5 20h14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>رفع كتاب وورد (.docx)</span>
-      </label>
-      <div id="tplList" class="list"></div>
-    </div>
-  </section>
-
-  <!-- السجل -->
-  <section class="view" id="view-history">
-    <div class="page">
-      <div class="page-head"><h2>السجل</h2><p>الكتب التي أنشأتها سابقاً.</p></div>
-      <div id="histList" class="list"></div>
-    </div>
-  </section>
-
-  <!-- الإعدادات -->
-  <section class="view" id="view-settings">
-    <div class="page">
-      <div class="page-head"><h2>الإعدادات</h2></div>
-
-      <div class="card">
-        <h3>الصياغة الذكية</h3>
-        <p class="hint">لكي يفهم التطبيق طلباتك الحرة ويصيغ الكتب، ضع مفتاح Gemini المجاني:</p>
-        <ol class="steps">
-          <li>افتح <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> وسجّل بحساب Google.</li>
-          <li>اضغط <b>Create API key</b> وانسخ المفتاح.</li>
-          <li>الصقه هنا واضغط حفظ.</li>
-        </ol>
-        <label class="field"><span>مفتاح Gemini</span><input id="setKey" type="password" dir="ltr" placeholder="AIza…" autocomplete="off"></label>
-        <details class="adv"><summary>متقدم</summary>
-          <label class="field"><span>النموذج</span><input id="setModel" dir="ltr" placeholder="gemini-2.5-flash"></label>
-        </details>
-        <p class="hint small">بدون المفتاح يعمل التطبيق بالأسئلة الجاهزة (إجازة، مطالعة، طلب لوجستي، كتاب حر).</p>
-      </div>
-
-      <div class="card">
-        <h3>القالب الافتراضي</h3>
-        <p class="hint">يُستخدم فقط إذا لم ترفع أي نموذج.</p>
-        <label class="field"><span>السطر الأول</span><input id="setOrg1" placeholder="جمهورية العراق"></label>
-        <label class="field"><span>السطر الثاني</span><input id="setOrg2" placeholder="اسم الدائرة"></label>
-        <label class="field"><span>السطر الثالث</span><input id="setOrg3" placeholder="القسم / الشعبة"></label>
-        <label class="field"><span>اسم الموقّع</span><input id="setSigner"></label>
-        <label class="field"><span>صفته</span><input id="setTitle" placeholder="مدير القسم"></label>
-      </div>
-
-      <div class="card">
-        <h3>الأرقام</h3>
-        <div class="seg" id="setDigits">
-          <button type="button" data-v="ar">عربية ١٢٣</button>
-          <button type="button" data-v="en">إنجليزية 123</button>
-        </div>
-        <p class="hint small">تُستخدم عندما يكون حقل العدد أو التاريخ فارغاً في النموذج. وإلا يتبع التطبيق نفس أرقام النموذج.</p>
-        <label class="field"><span>آخر رقم كتاب</span><input id="setLast" inputmode="numeric" dir="ltr" placeholder="مثلاً 450"></label>
-      </div>
-
-      <div class="card">
-        <h3>دليل الموظف</h3>
-        <p class="hint">الأنظمة والتعليمات وإجراءات العمل وأسس المطالعات، مع مساعد ذكي يجاوب أسئلتك.</p>
-        <a class="btn wide" href="https://claude.ai/artifact/M7qxLfuTMq2w6Ew6UMh8AJ" target="_blank" rel="noopener">فتح دليل الموظف</a>
-      </div>
-
-      <button class="btn primary wide" id="saveSettings">حفظ</button>
-      <p class="credit">تصميم وتطوير <span dir="ltr">Eng. Ahmed Noori</span></p>
-    </div>
-  </section>
-</main>
-
-<nav class="tabs">
-  <button class="tab active" data-view="chat"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>المحادثة</span></button>
-  <button class="tab" data-view="templates"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z M14 3v5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>النماذج</span></button>
-  <button class="tab" data-view="history"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>السجل</span></button>
-  <button class="tab" data-view="settings"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="10" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>الإعدادات</span></button>
-</nav>
-
+<div class="app" id="root"><div class="empty">جاري التحميل…</div></div>
+<nav class="bottom"><div class="in" id="nav"></div></nav>
 <div class="toast" id="toast"></div>
-
-<script src="vendor/jszip.min.js"></script>
-<script src="engine.js"></script>
-<script src="app.js"></script>
+<script src="guide.js"></script>
 </body>
 </html>
